@@ -1,10 +1,12 @@
 import { useEffect,useState } from "react";
 import Wordle from "./components/Wordle";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   const [solution,setSolution] = useState(null)
+
 
   useEffect(() => {
     fetch('http://localhost:4000/solutions')
@@ -25,6 +27,7 @@ function App() {
       </h1>
 
       {solution && <Wordle solution={solution}/>}
+      {/* <ToastContainer /> */}
     
     </div>
   );

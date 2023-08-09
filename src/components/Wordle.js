@@ -41,8 +41,8 @@ const Wordle = ({solution}) => {
 
   return (
     <div className='flex flex-col justify-center items-center' >
-      <div>Solution - {solution}</div> 
-      <div>Current Guess - {currentGuess}</div>
+      {/* <div>Solution - {solution}</div>  */}
+      {/* <div>Current Guess - {currentGuess}</div> */}
       
       <Grid currentGuess={currentGuess} guesses={guesses} turn={turn} />
       {/* old keypad (a-z not QWERTY and hot interactive) */}
