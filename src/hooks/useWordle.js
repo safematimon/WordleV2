@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify';
+import { checkWord } from '../helper/helper';
 
 const useWordle = (solution) => {
   const [turn, setTurn] = useState(0) 
@@ -60,7 +62,7 @@ const useWordle = (solution) => {
       formattedGuess.forEach(l => {
         const currentColor = prevUsedKeys[l.key]
 
-        console.log("prevUsedKeys[l.key]",prevUsedKeys[l.key])
+        // console.log("prevUsedKeys[l.key]",prevUsedKeys[l.key])
 
         if (l.color === 'green') {
           prevUsedKeys[l.key] = 'green'
@@ -85,26 +87,31 @@ const useWordle = (solution) => {
 
   // handle keyup event & track current guess
   // if user presses enter, add the new guess
-  const handleKeyup = ({ key }) => {
-    console.log("in func handleKeyup",{key})
-    console.log("cg",currentGuess)
+  const handleKeyup = async ({ key }) => {
 
     // check when enter
     if (key === 'Enter') {
-      // only add guess if turn is less than 5
-      if (turn > 5) {
-        console.log('you used all your guesses!')
+
+      if (turn>5) {
         return
       }
       // do not allow duplicate words
-      if (history.includes(currentGuess)) {
-        console.log('you already tried that word.')
+      else if (history.includes(currentGuess)) {
+        toast.error('You already tried that word.');
         return
       }
       // check word is 5 chars
-      if (currentGuess.length !== 5) {
-        console.log('word must be 5 chars.')
+      else if (currentGuess.length !== 5) {
+        toast.warn('Word must be 5 chars');
         return
+      }
+      else{
+        // check meaning
+        const response = await checkWord(currentGuess)
+        if(response.status !== 200){
+          toast.error(`The word "${currentGuess}" has no meaning.`);
+          return
+        }
       }
       const formatted = formatGuess()
       addNewGuess(formatted)

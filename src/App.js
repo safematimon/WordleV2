@@ -1,21 +1,26 @@
 import { useEffect,useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 import Wordle from "./components/Wordle";
-
+import { getSolution } from "./helper/helper";
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   const [solution,setSolution] = useState(null)
 
   useEffect(() => {
-    fetch('http://localhost:4000/solutions')
-      .then(res => res.json())
-      .then(json => {
-        // random int between 0 & 14
-        const randomSolution = json[Math.floor(Math.random()*json.length)]
+    const fetchSolutionData = async () => {
+      try {
+        const data = await getSolution();
+        const randomSolution = data[Math.floor(Math.random()*data.length)]
         setSolution(randomSolution.word)
-      })
-  }, [setSolution])
-    
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchSolutionData();
+  }, []);
+
 
   return (
     <div className="App min-h-screen bg-cyan-200/0 font-mono">
@@ -25,7 +30,7 @@ function App() {
       </h1>
 
       {solution && <Wordle solution={solution}/>}
-    
+      <ToastContainer />
     </div>
   );
 }

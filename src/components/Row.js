@@ -3,11 +3,10 @@ import React from 'react'
 const Row = ({guess,currentGuess}) => {
 
   if(guess){
-    console.log("trig")
     return (
       <div className='row past flex flex-row'>
       {guess.map((l, i) => {
-        console.log(l.color); // Move the console.log here
+        // console.log(l.color); // Move the console.log here
         return (
           <div key={i} className={l.color}>{l.key}</div>
           // <div key={i} className={`bg-${l.color}-600`}>{l.key}</div>
@@ -18,7 +17,7 @@ const Row = ({guess,currentGuess}) => {
   }
 
   if(currentGuess){
-    console.log("cg",currentGuess)
+    // console.log("cg",currentGuess)
     let letters = currentGuess.split('')
 
     return (
