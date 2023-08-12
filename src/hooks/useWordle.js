@@ -1,14 +1,19 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify';
 import { checkWord } from '../helper/helper';
+import useStore from "../store/useStore";
 
-const useWordle = (solution) => {
-  const [turn, setTurn] = useState(0) 
-  const [currentGuess, setCurrentGuess] = useState('')
-  const [guesses, setGuesses] = useState([...Array(6)]) // each guess is an array
-  const [history, setHistory] = useState([]) // each guess is a string
-  const [isCorrect, setIsCorrect] = useState(false)
-  const [usedKeys,setUsedKeys] = useState({}) //{a:'green',b:'yell'}
+const useWordle = () => {
+
+  const {
+    solution,
+    turn,incrementTurn,
+    currentGuess,setCurrentGuess,addCurrentGuess,delCurrentGuess,
+    guesses,addGuesses,
+    history,addToHistory,
+    isCorrect,setIsCorrect,
+    usedKeys,updateUsedKeys
+  } = useStore();
 
   // format a guess into an array of letter objects 
   // e.g. [{key: 'a', color: 'yellow'}]
@@ -44,43 +49,10 @@ const useWordle = (solution) => {
     if (currentGuess === solution) {
       setIsCorrect(true)
     }
-    setGuesses(prevGuesses => {
-      let newGuesses = [...prevGuesses]
-      newGuesses[turn] = formattedGuess
-      return newGuesses
-    })
-    setHistory(prevHistory => {
-      return [...prevHistory, currentGuess]
-    })
-    setTurn(prevTurn => {
-      return prevTurn + 1
-    })
-
-    setUsedKeys((prevUsedKeys)=>{
-      let newKeys = {...prevUsedKeys}
-      
-      formattedGuess.forEach(l => {
-        const currentColor = prevUsedKeys[l.key]
-
-        // console.log("prevUsedKeys[l.key]",prevUsedKeys[l.key])
-
-        if (l.color === 'green') {
-          prevUsedKeys[l.key] = 'green'
-          return
-        }
-        if (l.color === 'yellow' && currentColor !== 'green') {
-          prevUsedKeys[l.key] = 'yellow'
-          return
-        }
-        if (l.color === 'grey' && currentColor !== ('green' || 'yellow')) {
-          prevUsedKeys[l.key] = 'grey'
-          return
-        }
-      })
-
-      return newKeys
-    })
-
+    addGuesses(turn,formattedGuess)
+    addToHistory(currentGuess)
+    incrementTurn()
+    updateUsedKeys(formattedGuess)
     setCurrentGuess('')
   }
 
@@ -118,19 +90,18 @@ const useWordle = (solution) => {
     }
     // del
     if (key === 'Backspace' || key === 'Del') {
-      setCurrentGuess(prev => prev.slice(0, -1))
+      delCurrentGuess()
       return
     }
     // add 
     if (/^[A-Za-z]$/.test(key)) {
       if (currentGuess.length < 5) {
-        setCurrentGuess(prev => prev + key)
+        addCurrentGuess(key)
       }
     }
   }
 
-
-  return {turn, currentGuess, guesses, isCorrect, handleKeyup, usedKeys}
+  return handleKeyup
 }
 
 export default useWordle

@@ -1,14 +1,21 @@
 import React,{useEffect,useState} from 'react'
 import useWordle from '../hooks/useWordle'
 import Grid from './Grid'
-import Keypad from './Keypad'
 import QwertyKeypad from './QwertyKeypad'
 import { toast } from 'react-toastify';
+import useStore from "../store/useStore";
 
 
-const Wordle = ({solution}) => {
+const Wordle = () => {
 
-  const {currentGuess,handleKeyup,guesses,isCorrect,turn,usedKeys} = useWordle(solution)
+  const {
+    solution,
+    turn,
+    currentGuess,
+    isCorrect,
+  } = useStore();
+
+  const handleKeyup = useWordle()
   
   // for real keyboard action
   useEffect(() => {
@@ -35,14 +42,18 @@ const Wordle = ({solution}) => {
 
 
   return (
-    <div className='flex flex-col justify-center items-center' >
-      {/* <div>Solution - {solution}</div> 
-      <div>Current Guess - {currentGuess}</div> */}
+    <div className='flex flex-col justify-center items-center p-10' >
+      {/* <div>Solution - {solution}</div>  */}
+      {/* <div>Current Guess - {currentGuess}</div> */}
       
-      <Grid currentGuess={currentGuess} guesses={guesses} turn={turn} />
+      {/* <Grid currentGuess={currentGuess} guesses={guesses} turn={turn} /> */}
+      <Grid/>
+
       {/* old keypad (a-z not QWERTY and hot interactive) */}
       {/* <Keypad usedKeys={usedKeys}/> */}
-      <QwertyKeypad onKeyClick={handleKeyClick} usedKeys={usedKeys} turn={turn} isCorrect={isCorrect} />
+
+      {/* <QwertyKeypad onKeyClick={handleKeyClick} usedKeys={usedKeys} turn={turn} isCorrect={isCorrect} /> */}
+      <QwertyKeypad onKeyClick={handleKeyClick}  />
 
     </div>
   )

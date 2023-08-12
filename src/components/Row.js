@@ -1,8 +1,18 @@
 import React from 'react'
+import useStore from "../store/useStore";
 
 const Row = ({guess,currentGuess}) => {
 
+  // const {
+  //   turn,
+  //   currentGuess,
+  //   guesses,
+  // } = useStore();
+
+  // console.log("guess",guess,"currentGuess",currentGuess,)
+
   if(guess){
+    console.log("trig")
     return (
       <div className='row past flex flex-row'>
       {guess.map((l, i) => {
@@ -17,7 +27,6 @@ const Row = ({guess,currentGuess}) => {
   }
 
   if(currentGuess){
-    // console.log("cg",currentGuess)
     let letters = currentGuess.split('')
 
     return (
@@ -42,35 +51,9 @@ const Row = ({guess,currentGuess}) => {
       <div className='w-16 h-16 border-4 border-black flex justify-center items-center m-2'></div>
       <div className='w-16 h-16 border-4 border-black flex justify-center items-center m-2'></div>
       <div className='w-16 h-16 border-4 border-black flex justify-center items-center m-2'></div>
+      
     </div>
   )
 }
 
 export default Row
-
-// import React from 'react'
-
-// export default function Row({ guess }) {
-
-//   if (guess) {
-//     console
-//     return (
-//       <div className="row past">
-//         {guess.map((l, i) => (
-//           <div key={i} className={l.color}>{l.key}</div>
-//         ))}
-//       </div>
-//     )
-//   }
-
-//   return (
-//     <div className="row">
-//       <div></div>
-//       <div></div>
-//       <div></div>
-//       <div></div>
-//       <div></div>
-//     </div>
-//   )
-  
-// }

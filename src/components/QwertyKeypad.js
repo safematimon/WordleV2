@@ -1,5 +1,13 @@
+import useStore from "../store/useStore";
 
-const QwertyKeypad = ({ onKeyClick,usedKeys,turn,isCorrect }) => {
+
+const QwertyKeypad = ({ onKeyClick}) => {
+
+  const {
+    turn,
+    isCorrect,
+    usedKeys
+  } = useStore();
 
   const letters = [
     {key: "q"},

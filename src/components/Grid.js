@@ -1,12 +1,22 @@
 import Row from './Row'
+import useStore from "../store/useStore";
 
-const Grid = ({guesses,currentGuess,turn}) => {
+const Grid = () => {
+
+  const {
+    turn,
+    currentGuess,
+    guesses,
+  } = useStore();
+
   return (
     <div>
       {guesses.map((g,i)=>{
+        // current guess
         if(turn===i){
           return <Row key={i} currentGuess={currentGuess} />
         }
+        // prev guess
         return <Row key={i} guess={g} />
       })}
     </div>
@@ -14,19 +24,3 @@ const Grid = ({guesses,currentGuess,turn}) => {
 }
 
 export default Grid
-
-// // =====================
-// import React from 'react'
-
-// // components
-// import Row from './Row'
-
-// export default function Grid({ guesses, currentGuess, turn }) {
-//   return (
-//     <div>
-//       {guesses.map((g, i) => {
-//         return <Row key={i} guess={g} /> 
-//       })}
-//     </div>
-//   )
-// }
